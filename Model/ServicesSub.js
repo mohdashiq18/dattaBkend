@@ -7,6 +7,7 @@ const servicesSubSchema=mongoose.Schema({
     image:{type:String},
     purpose:{type:String},
     description:{type:String},
+    sdescription:{type:String,require:true},
     samegri:{type:String},
     wedo:{type:String}
 
