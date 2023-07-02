@@ -5,6 +5,7 @@ const {ServicesMain} = require("./Route/ServicesMain")
 const {ServicesSub} = require("./Route/ServicesSub")
 const {Event} =require("./Route/EventBooking")
 const {Appointment}=require("./Route/Appointment")
+const {pancham} =require("./Route/Panchanm")
 const cors=require("cors")
 app.use(express.json())
 app.use(
@@ -17,6 +18,7 @@ app.use("/main",ServicesMain)
 app.use("/sub",ServicesSub)
 app.use("/event",Event)
 app.use("/appointment",Appointment)
+app.use("/pncha",pancham)
 
 app.listen(8080,async(req,res)=>{
     try{
