@@ -38,8 +38,9 @@ ServicesMain.delete("/:id", async (req, res) => {
 
 ServicesMain.patch("/:id", async (req, res) => {
   const id = req.params.id;
+  const payload=req.body
   try {
-    await ServicesMainModel.findByIdAndUpdate({ "_id": id });
+    await ServicesMainModel.findByIdAndUpdate({ "_id": id },payload);
     res.send("Update Success");
   } catch {
     res.send("error Update");

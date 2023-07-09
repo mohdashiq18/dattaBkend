@@ -51,8 +51,9 @@ ServicesSub.delete("/:id", async (req, res) => {
 
 ServicesSub.patch("/:id", async (req, res) => {
   const id = req.params.id;
+  const payload=req.body
   try {
-    await ServicesSubModel.findByIdAndUpdate({ _id: id });
+    await ServicesSubModel.findByIdAndUpdate({ _id: id },payload);
     res.send("Update Success");
   } catch {
     res.send("error Update");
