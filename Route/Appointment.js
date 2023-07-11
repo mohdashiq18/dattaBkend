@@ -14,7 +14,8 @@ Appointment.get("/", async (req, res) => {
             { appointmentDate: { $regex: query, $options: 'i' } },
             { phone: { $regex: query, $options: 'i' } },
             { email: { $regex: query, $options: 'i' } },
-            { pincode: { $regex: query, $options: 'i' } }
+            { pincode: { $regex: query, $options: 'i' } },
+            { appointmentStatus: { $regex: query, $options: 'i' } }
           ]
         }).sort({ appointmentDate: 'asc' }).exec();
       } else {

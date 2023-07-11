@@ -14,7 +14,8 @@ Event.get("/",async(req,res)=>{
               { eventDate: { $regex: query, $options: 'i' } },
               { phone: { $regex: query, $options: 'i' } },
               { email: { $regex: query, $options: 'i' } },
-              { pincode: { $regex: query, $options: 'i' } }
+              { pincode: { $regex: query, $options: 'i' } },
+              { eventStatus: { $regex: query, $options: 'i' } }
             ]
           }).sort({ eventDate: 'asc' }).exec();
         } else {
@@ -53,6 +54,23 @@ Event.get("/:id",async(req,res)=>{
     catch{
         res.send("Error")
     }
+}) 
+Event.get("/users/:id",async(req,res)=>{
+  const id=req.params.id 
+  try{
+      const data = await EventModel.find({eventId:id}).sort({ eventDate: 'asc' });
+      const sortedData = data.sort((a, b) => {
+        const [dayA, monthA, yearA] = a.eventDate.split('/');
+        const [dayB, monthB, yearB] = b.eventDate.split('/');
+        const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
+        const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
+        return dateB - dateA;
+      });
+      res.send(sortedData);
+  }
+  catch{
+      res.send("Error")
+  }
 })  
 Event.post("/",async(req,res)=>{
     const payload=req.body
