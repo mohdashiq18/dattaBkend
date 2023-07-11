@@ -66,14 +66,15 @@ Appointment.post("/",async(req,res)=>{
            await user.save()
            console.log("user save")
         }
-        const userid=await UsersModel.find(query)
+        const userid=await UsersModel.find({phone:payload.phone})
         const id=userid[0]._id
        const data =new AppointmentModel({...payload,userId:id})
        await data.save()
        res.send(data)
     }
-    catch{
+    catch(err){
         res.send("Post ERRoR")
+        console.log(err)
     }
 })
  

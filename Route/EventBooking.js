@@ -32,8 +32,9 @@ Event.get("/",async(req,res)=>{
       
         res.send(sortedData); 
       }
-    catch{
+    catch(err){
         res.send("Error")
+        console.log(err)
     }
 })
 
