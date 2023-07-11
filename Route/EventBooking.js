@@ -74,11 +74,11 @@ Event.get("/users/:id",async(req,res)=>{
 })  
 Event.post("/",async(req,res)=>{
     const payload=req.body
-    let query={"$and":[{email:payload.email},{phone:payload.phone}]}
-    let check=await UsersModel.find(query)
+
+    let check=await UsersModel.find({phone:payload.phone})
     try{
         if(check.length==0){
-            const user=new UsersModel({email:payload.email,phone:payload.phone,name:(payload.fname+" "+payload.lname)})
+            const user=new UsersModel({phone:payload.phone,name:(payload.fname+" "+payload.lname)})
             await user.save()
             console.log("user save")
          }
