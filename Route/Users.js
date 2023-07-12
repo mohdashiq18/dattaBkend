@@ -12,17 +12,16 @@ UsersRoute.get("/",async(req,res)=>{
         res.send("Error")
     }
 })
-// UsersRoute.post("/",async(req,res)=>{
-//     const payload=req.body
-//     try{
-//        const data =new UsersModel(payload)
-//        await data.save()
-//        res.send(data)
-//     }
-//     catch{
-//         res.send("Post ERRoR")
-//     }
-// })
+
+UsersRoute.get("/:id",async(req,res)=>{
+    try{
+      const data=await UsersModel.find({_id:id})
+      res.send(data)
+    }
+    catch{
+        res.send("Error")
+    }
+})
 
 UsersRoute.delete("/:id",async(req,res)=>{
     const id=req.params.id 
