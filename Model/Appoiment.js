@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const appointmentSchema = mongoose.Schema({
   fname: { type: String, required: true },
-  lname: { type: String, required: true },
+  lname: { type: String,  },
   userId: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String},
   address: { type: String, default: "Null" },
   pincode: { type: String, default: "Null" },
   appointmentDate: { type: String, require: true },
-  message: { type: String },
+  message: { type: String,require: true },
   appointmentStatus: { type: String, default: "Pending" },
 });
 

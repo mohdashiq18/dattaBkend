@@ -79,7 +79,7 @@ Event.post("/",async(req,res)=>{
     let check=await UsersModel.find({phone:payload.phone})
     try{
         if(check.length==0){
-            const user=new UsersModel({phone:payload.phone,name:(payload.fname+" "+payload.lname)})
+            const user=new UsersModel({phone:payload.phone,fname:payload.fname,lname:payload.lname?payload.lname:"",email:payload.email?payload.email:""})
             await user.save()
             console.log("user save")
          }
