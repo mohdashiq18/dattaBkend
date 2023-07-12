@@ -14,6 +14,7 @@ UsersRoute.get("/",async(req,res)=>{
 })
 
 UsersRoute.get("/:id",async(req,res)=>{
+    const id=req.params.id 
     try{
       const data=await UsersModel.find({_id:id})
       res.send(data)
