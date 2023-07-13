@@ -49,6 +49,27 @@ UsersRoute.patch("/:id",async(req,res)=>{
     }
 })
 
+UsersRoute.post("/",async(req,res)=>{
+    
+    const payload =req.body
+    const data=await UsersModel.find({phone:payload.phone})
+    try{
+        if(data.length>0){
+            await UsersModel.findByIdAndUpdate({"_id":data[0]._id},payload)
+            res.send("Update Success")
+        }
+    else{
+        const user= new UsersModel(payload)
+        await user.save()
+        res.send("Add Successful")
+    }
+    
+    }
+    catch{
+     res.send("Update Error")
+    }
+})
+
 module.exports={
     UsersRoute
 }

@@ -5,7 +5,10 @@ const usersSchema = mongoose.Schema({
   lname:{ type: String },
   email:{type:String},
   phone: { type: String, required: true },
-  email: { type: String }
+  email: { type: String },
+  DOB:{type:String,default:null},
+  TOB:{type:String,default:null},
+  POB:{type:String,default:null}
 });
 
 const UsersModel = mongoose.model("users", usersSchema);
