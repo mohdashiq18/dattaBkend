@@ -5,31 +5,28 @@ const {AppointmentModel}=require("../Model/Appoiment")
 const {EventModel}=require("../Model/EventBooking")
 UsersRoute.get("/", async (req, res) => {
     try {
-        const { query } = req.query;
-
-       if(query){
-        let data;
-    
-        if (query) {
-          data = await UsersModel.find({
-            $or: [
-              { fname: { $regex: query, $options: "i" } },
-              { phone: { $regex: query, $options: "i" } },
-              { email: { $regex: query, $options: "i" } },
-              { lname: { $regex: query, $options: "i" } }
-            ],
-          })
-        }
-       }
-       else{
-        data = await UsersModel.find()
-       }
-      
+      const { query } = req.query;
+      let data;
+  
+      if (query) {
+        data = await UsersModel.find({
+          $or: [
+            { fname: { $regex: query, $options: "i" } },
+            { phone: { $regex: query, $options: "i" } },
+            { email: { $regex: query, $options: "i" } },
+            { lname: { $regex: query, $options: "i" } }
+          ]
+        }).exec();
+      } else {
+        data = await UsersModel.find();
+      }
+  
       res.send(data);
     } catch (error) {
       res.status(500).send("Error");
     }
   });
+  
   
 
 UsersRoute.get("/:id",async(req,res)=>{
