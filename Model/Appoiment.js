@@ -8,7 +8,7 @@ const appointmentSchema = mongoose.Schema({
   email: { type: String},
   address: { type: String, default: "Null" },
   pincode: { type: String, default: "Null" },
-  appointmentDate: { type: String, require: true },
+  appointmentDate: { type: String, default: "Any Time" },
   message: { type: String,require: true },
   appointmentStatus: { type: String, default: "Pending" },
 });
