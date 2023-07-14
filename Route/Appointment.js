@@ -31,7 +31,7 @@ Appointment.get("/", async (req, res) => {
       const [dayB, monthB, yearB] = b.appointmentDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateB - dateA;
+      return dateA - dateB;
     });
 
     res.send(sortedData);
@@ -52,7 +52,7 @@ Appointment.get("/:id", async (req, res) => {
       const [dayB, monthB, yearB] = b.appointmentDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateB - dateA;
+      return dateA - dateB;
     });
     res.send(sortedData);
   } catch {
