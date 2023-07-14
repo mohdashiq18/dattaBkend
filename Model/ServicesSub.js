@@ -10,8 +10,6 @@ const servicesSubSchema=mongoose.Schema({
     sdescription:{type:String,require:true},
     samegri:{type:String},
     wedo:{type:String}
-
-
 })
 
 const ServicesSubModel=mongoose.model("servicesSub",servicesSubSchema)
