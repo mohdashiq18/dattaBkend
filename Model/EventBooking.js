@@ -8,13 +8,13 @@ const eventSchema = mongoose.Schema({
   eventName: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String},
-  address: { type: String, require: true },
   pincode: { type: String, require: true },
   eventDate: { type: String, require: true },
   message: { type: String },
   eventStatus:{type:String,default:"Pending"},
   image:{type:String,default:null},
-  paymentStatus:{type:Boolean,default:false}
+  paymentStatus:{type:Boolean,default:false},
+  address: { type: String, require: true },
 });
 
 const EventModel = mongoose.model("EventBooking", eventSchema);
