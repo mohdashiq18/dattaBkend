@@ -6,6 +6,7 @@ const usersSchema = mongoose.Schema({
   email:{type:String},
   phone: { type: String, required: true },
   email: { type: String },
+  address:{type:String,default:null},
   DOB:{type:String,default:null},
   TOB:{type:String,default:null},
   POB:{type:String,default:null}
