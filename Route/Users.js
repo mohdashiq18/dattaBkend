@@ -7,6 +7,7 @@ UsersRoute.get("/", async (req, res) => {
     try {
         const { query } = req.query;
 
+       if(query){
         let data;
     
         if (query) {
@@ -19,6 +20,10 @@ UsersRoute.get("/", async (req, res) => {
             ],
           })
         }
+       }
+       else{
+        data = await UsersModel.find()
+       }
       
       res.send(data);
     } catch (error) {
