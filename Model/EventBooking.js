@@ -15,6 +15,7 @@ const eventSchema = mongoose.Schema({
   image:{type:String,default:null},
   paymentStatus:{type:Boolean,default:false},
   address: { type: String, require: true },
+  authorMessage: { type: String,default: null }
 });
 
 const EventModel = mongoose.model("EventBooking", eventSchema);

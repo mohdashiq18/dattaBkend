@@ -10,7 +10,7 @@ const appointmentSchema = mongoose.Schema({
   pincode: { type: String, default: null},
   appointmentDate: { type: String, default: "Any Time" },
   message: { type: String,require: true },
-  authorMessage: { type: String,require: true },
+  authorMessage: { type: String,default: null },
   appointmentStatus: { type: String, default: "Pending" },
 });
 

@@ -12,7 +12,8 @@ const horoSchema = mongoose.Schema({
   POB:{type:String,default:null},
   message:{type: String, required: true},
   horoStatus:{type:String,default:"Pending"},
-  horoDate:{type:String}
+  horoDate:{type:String},
+  authorMessage: { type: String,default: null }
 });
 
 const HoroModel = mongoose.model("horoScope", horoSchema);
