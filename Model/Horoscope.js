@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+
+const horoSchema = mongoose.Schema({
+  fname:{ type: String, required: true },
+  lname:{ type: String },
+  userId:{type:String,required:true},
+  email:{type:String},
+  phone: { type: String, required: true },
+  address:{type:String,required: true},
+  DOB:{type:String,default:null},
+  TOB:{type:String,default:null},
+  POB:{type:String,default:null},
+  message:{type: String, required: true},
+  horoStatus:{type:String,default:"Pending"},
+  horoDate:{type:String}
+});
+
+const HoroModel = mongoose.model("horoScope", horoSchema);
+
+module.exports = {
+  HoroModel,
+};
+  

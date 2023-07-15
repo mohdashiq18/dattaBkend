@@ -8,13 +8,14 @@ const {Appointment}=require("./Route/Appointment")
 const {UsersRoute}=require("./Route/Users")
 const {AdminRoute}=require("./Route/Admin")
 const {pancham} =require("./Route/Panchanm")
+const {Horo} =require("./Route/Horoscope")
 const cors=require("cors")
 app.use(express.json())
 app.use(
     cors({
         origin:"*",
     })
-)
+) 
 
 app.use("/main",ServicesMain) 
 app.use("/sub",ServicesSub)
@@ -23,6 +24,7 @@ app.use("/appointment",Appointment)
 app.use("/pncha",pancham)
 app.use("/users",UsersRoute)
 app.use("/admin",AdminRoute)
+app.use("/horo",Horo)
 
 app.listen(8080,async(req,res)=>{
     try{
