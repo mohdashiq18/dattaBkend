@@ -13,6 +13,8 @@ Event.get("/", async (req, res) => {
         $or: [
           { eventDate: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
+          { fname: { $regex: query, $options: "i" } },
+          { lname: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
           { pincode: { $regex: query, $options: "i" } },
           { eventStatus: { $regex: query, $options: "i" } },
