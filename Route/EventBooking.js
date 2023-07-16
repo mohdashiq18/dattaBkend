@@ -52,7 +52,18 @@ Event.get("/:id", async (req, res) => {
       const [dayB, monthB, yearB] = b.eventDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateB - dateA;
+      const statusA = a.eventStatus.toLowerCase();
+      const statusB = b.eventStatus.toLowerCase();
+
+      if (statusA === "pending" && statusB !== "pending") {
+        return -1;
+      } else if (statusA !== "pending" && statusB === "pending") {
+        return 1;
+      } else if (statusA === "pending" && statusB === "pending") {
+        return dateA - dateB;
+      } else {
+        return dateA - dateB;
+      }
     });
     res.send(sortedData);
   } catch {
@@ -70,7 +81,7 @@ Event.get("/users/:id", async (req, res) => {
       const [dayB, monthB, yearB] = b.eventDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateB - dateA;
+      return dateA - dateB;
     });
     res.send(sortedData);
   } catch {
