@@ -3,6 +3,7 @@ const {UsersModel}=require("../Model/User")
 const UsersRoute=express.Router()
 const {AppointmentModel}=require("../Model/Appoiment")
 const {EventModel}=require("../Model/EventBooking")
+const {Horo}=require("../Model/Horoscope")
 UsersRoute.get("/", async (req, res) => {
     try {
       const { query } = req.query;
@@ -44,6 +45,7 @@ UsersRoute.delete("/:id",async(req,res)=>{
     const id=req.params.id 
     try{
         await AppointmentModel.deleteMany({ userId: id });
+        await Horo.deleteMany({userId:id})
         await EventModel.deleteMany({ userId: id });
         await UsersModel.findByIdAndDelete({"_id":id})
     res.send("Delete Success")

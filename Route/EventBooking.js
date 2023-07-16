@@ -131,7 +131,37 @@ Event.patch("/:id", async (req, res) => {
   let { remainAmmount } = user[0];
 
   try {
-    if (payload.ammount && payload.eventStatus) {
+    if(ammount>0 && payload.ammount){
+           if(payload.eventStatus){
+               if(payload.eventStatus=="Completed"){
+                await UsersModel.findByIdAndUpdate(
+                  { _id: data[0].userId },
+                  { remainAmmount: remainAmmount - ammount,paidAmmount:paidAmmount+payload.ammount }
+                );
+               }
+               else{
+                await UsersModel.findByIdAndUpdate(
+                  { _id: data[0].userId },
+                  { remainAmmount: remainAmmount + payload.ammount,paidAmmount:paidAmmount-ammount }
+                );
+               }
+           }
+           else{
+            if(status=="Pending"){
+              await UsersModel.findByIdAndUpdate(
+                { _id: data[0].userId },
+                { remainAmmount: (remainAmmount - ammount)+payload.ammount}
+              );
+            }
+            else{
+              await UsersModel.findByIdAndUpdate(
+                { _id: data[0].userId },
+                {paidAmmount:paidAmmount+payload.ammount-ammount }
+              );
+            }
+           }
+    }
+    else if (payload.ammount && payload.eventStatus) {
       if (payload.eventStatus == "Pending") {
         await UsersModel.findByIdAndUpdate(
           { _id: data[0].userId },
@@ -140,7 +170,7 @@ Event.patch("/:id", async (req, res) => {
       } else {
         await UsersModel.findByIdAndUpdate(
           { _id: data[0].userId },
-          { paidAmmount: paidAmmount + payload.ammount }
+          { paidAmmount: paidAmmount + payload.ammount}
         );
       }
     } else if (payload.ammount && status == "Pending") {
@@ -151,7 +181,7 @@ Event.patch("/:id", async (req, res) => {
     } else if (payload.ammount && status == "Pending") {
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-        { paidAmmount: paidAmmount + payload.ammount }
+        { paidAmmount: paidAmmount + payload.ammount}
       );
     } else if (payload.eventStatus && ammount > 0) {
       if (payload.eventStatus === "Pending") {
@@ -173,7 +203,7 @@ Event.patch("/:id", async (req, res) => {
         );
       }
     }
-    await EventModel.findByIdAndUpdate({ _id: id }, payload);
+    await EventModel.findByIdAndUpdate({ _id: id }, {...payload});
     res.send("Update Success");
   } catch (err) {
     console.log(err);
