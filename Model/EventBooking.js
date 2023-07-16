@@ -14,6 +14,7 @@ const eventSchema = mongoose.Schema({
   eventStatus:{type:String,default:"Pending"},
   image:{type:String,default:null},
   paymentStatus:{type:Boolean,default:false},
+  ammount:{type:Number,default:0},
   address: { type: String, require: true },
   authorMessage: { type: String,default: null }
 });

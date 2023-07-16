@@ -88,17 +88,20 @@ Event.post("/", async (req, res) => {
         fname: payload.fname,
         lname: payload.lname ? payload.lname : "",
         email: payload.email ? payload.email : "",
-        address:`${payload.address}, ${payload.pincode}`
+        address: `${payload.address}, ${payload.pincode}`,
       });
       await user.save();
       console.log("user save");
     }
-    
+
     const userid = await UsersModel.find({ phone: payload.phone });
-    
+
     const id = userid[0]._id;
-    if(!userid[0].address){
-      await UsersModel.findByIdAndUpdate({_id:id},{address:`${payload.address}, ${payload.pincode}`})
+    if (!userid[0].address) {
+      await UsersModel.findByIdAndUpdate(
+        { _id: id },
+        { address: `${payload.address}, ${payload.pincode}` }
+      );
     }
     const data = new EventModel({ ...payload, userId: id });
     await data.save();
@@ -120,10 +123,60 @@ Event.delete("/:id", async (req, res) => {
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
+  const data = await EventModel.find({ _id: id });
+  const user = await UsersModel.find({ _id: data[0].userId });
+  const status = data[0].eventStatus;
+  let { ammount } = data[0];
+  let { paidAmmount } = user[0];
+  let { remainAmmount } = user[0];
+
   try {
+    if (payload.ammount && payload.eventStatus) {
+      if (payload.eventStatus == "Pending") {
+        await UsersModel.findByIdAndUpdate(
+          { _id: data[0].userId },
+          { remainAmmount: remainAmmount + payload.ammount }
+        );
+      } else {
+        await UsersModel.findByIdAndUpdate(
+          { _id: data[0].userId },
+          { paidAmmount: paidAmmount + payload.ammount }
+        );
+      }
+    } else if (payload.ammount && status == "Pending") {
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+        { remainAmmount: remainAmmount + payload.ammount }
+      );
+    } else if (payload.ammount && status == "Pending") {
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+        { paidAmmount: paidAmmount + payload.ammount }
+      );
+    } else if (payload.eventStatus && ammount > 0) {
+      if (payload.eventStatus === "Pending") {
+        await UsersModel.findByIdAndUpdate(
+          { _id: data[0].userId },
+          {
+            paidAmmount: paidAmmount - ammount,
+            remainAmmount: remainAmmount + ammount,
+          }
+        );
+      }
+      else{
+        await UsersModel.findByIdAndUpdate(
+          { _id: data[0].userId },
+          {
+            paidAmmount: paidAmmount + ammount,
+            remainAmmount: remainAmmount - ammount,
+          }
+        );
+      }
+    }
     await EventModel.findByIdAndUpdate({ _id: id }, payload);
     res.send("Update Success");
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.send("Update Error");
   }
 });
