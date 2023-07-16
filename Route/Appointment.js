@@ -31,7 +31,18 @@ Appointment.get("/", async (req, res) => {
       const [dayB, monthB, yearB] = b.appointmentDate.split("/");
       const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
       const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-      return dateA - dateB;
+      const statusA = a.appointmentStatus.toLowerCase();
+      const statusB = b.appointmentStatus.toLowerCase();
+
+      if (statusA === "pending" && statusB !== "pending") {
+        return -1;
+      } else if (statusA !== "pending" && statusB === "pending") {
+        return 1;
+      } else if (statusA === "pending" && statusB === "pending") {
+        return dateA - dateB;
+      } else {
+        return dateA - dateB;
+      }
     });
 
     res.send(sortedData);
@@ -40,6 +51,7 @@ Appointment.get("/", async (req, res) => {
     res.send("Error");
   }
 });
+
 
 Appointment.get("/:id", async (req, res) => {
   const id = req.params.id;
