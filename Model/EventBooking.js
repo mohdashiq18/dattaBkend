@@ -13,6 +13,7 @@ const eventSchema = mongoose.Schema({
   eventDate: { type: String, require: true },
   message: { type: String },
   eventStatus:{type:String,default:"Pending"},
+  eventTime:{type:String,default:"00:00"},
   image:{type:String,default:null},
   paymentStatus:{type:Boolean,default:false},
   ammount:{type:Number,default:0},
