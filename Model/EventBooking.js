@@ -7,6 +7,7 @@ const eventSchema = mongoose.Schema({
   eventId:{type:String,required:true},
   eventName: { type: String, required: true },
   phone: { type: String, required: true },
+  bookingDate:{ type: String, required: true },
   email: { type: String},
   pincode: { type: String, require: true },
   eventDate: { type: String, require: true },

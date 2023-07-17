@@ -72,12 +72,14 @@ Horo.post("/", async (req, res) => {
         email: payload.email ? payload.email : "",
         DOB: payload.DOB,
         TOB: payload.TOB,
+        nakshatra:payload.nakshatra,
         POB: payload.POB,
         address: payload.address,
       });
       await user.save();
       console.log("user save");
     }
+   
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
     if (!userid[0].address) {
@@ -103,8 +105,13 @@ Horo.post("/", async (req, res) => {
           { _id: id },
           { POB: payload.POB  }
         );
+      } 
+      if(!check[0].nakshatra){
+        await UsersModel.findByIdAndUpdate(
+          { _id: id },
+          { nakshatra:payload.nakshatra  }
+        );
       }
-
       const currentDate = new Date();
 
 const day = currentDate.getDate();

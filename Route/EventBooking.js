@@ -90,7 +90,16 @@ Event.get("/users/:id", async (req, res) => {
 });
 Event.post("/", async (req, res) => {
   const payload = req.body;
+  const currentDate = new Date();
 
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+  
+  // Add leading zero to month if necessary
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  
+  const formattedDate = `${day}/${formattedMonth}/${year}`;
   let check = await UsersModel.find({ phone: payload.phone });
   try {
     if (check.length == 0) {
@@ -114,7 +123,7 @@ Event.post("/", async (req, res) => {
         { address: `${payload.address}, ${payload.pincode}` }
       );
     }
-    const data = new EventModel({ ...payload, userId: id });
+    const data = new EventModel({ ...payload, userId: id,bookingDate:formattedDate });
     await data.save();
     res.send(data);
   } catch {

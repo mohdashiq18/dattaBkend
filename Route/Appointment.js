@@ -75,6 +75,16 @@ Appointment.post("/", async (req, res) => {
   const payload = req.body;
   let check = await UsersModel.find({ phone: payload.phone });
   console.log(check);
+  const currentDate = new Date();
+
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+  
+  // Add leading zero to month if necessary
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  
+  const formattedDate = `${day}/${formattedMonth}/${year}`;
   try {
     if (check.length == 0) {
       const user = new UsersModel({
@@ -88,9 +98,9 @@ Appointment.post("/", async (req, res) => {
     }
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
-    const data = new AppointmentModel({ ...payload, userId: id });
+    const data = new AppointmentModel({ ...payload, userId: id,bookingDate:formattedDate });
     await data.save();
-    res.send(data);
+    res.send(data); 
   } catch (err) {
     res.send("Post ERRoR");
     console.log(err);
