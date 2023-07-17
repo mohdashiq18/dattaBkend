@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const eventSchema = mongoose.Schema({
   fname: { type: String, required: true },
   lname: { type: String,  },
-  userId:{type:String,required:true},
-  eventId:{type:String,required:true},
-  eventName: { type: String, required: true },
+  userId:{type:String,required: true},
+  eventId:{type:String,default:null},
+  eventName: { type: String,default:null },
   phone: { type: String, required: true },
   bookingDate:{ type: String, required: true },
   email: { type: String},

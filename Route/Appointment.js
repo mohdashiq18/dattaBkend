@@ -93,7 +93,7 @@ Appointment.post("/", async (req, res) => {
         lname: payload.lname ? payload.lname : "",
         email: payload.email ? payload.email : "",
       });
-      await user.save();
+      await user.save(); 
       console.log("user save");
     }
     const userid = await UsersModel.find({ phone: payload.phone });

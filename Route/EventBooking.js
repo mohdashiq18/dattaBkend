@@ -24,7 +24,7 @@ Event.get("/", async (req, res) => {
         .exec();
     } else {
       data = await EventModel.find().sort({ eventDate: "asc" }).exec();
-    }
+    } 
 
     const sortedData = data.sort((a, b) => {
       const [dayA, monthA, yearA] = a.eventDate.split("/");

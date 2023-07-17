@@ -75,7 +75,7 @@ Horo.post("/", async (req, res) => {
         nakshatra:payload.nakshatra,
         POB: payload.POB,
         address: payload.address,
-      });
+      }); 
       await user.save();
       console.log("user save");
     }
