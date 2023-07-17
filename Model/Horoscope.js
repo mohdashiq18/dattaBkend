@@ -10,7 +10,7 @@ const horoSchema = mongoose.Schema({
   DOB:{type:String,default:null},
   TOB:{type:String,default:null},
   POB:{type:String,default:null},
-  message:{type: String, required: true},
+  message:{type: String},
   nakshatra:{type: String, required: true},
   horoStatus:{type:String,default:"Pending"},
   horoDate:{type:String},
