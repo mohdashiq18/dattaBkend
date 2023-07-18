@@ -8,6 +8,7 @@ const horoSchema = mongoose.Schema({
   phone: { type: String, required: true },
   address:{type:String,required: true},
   DOB:{type:String,default:null},
+  city:{ type: String, default:null },
   TOB:{type:String,default:null},
   POB:{type:String,default:null},
   message:{type: String},

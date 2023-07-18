@@ -8,6 +8,8 @@ const appointmentSchema = mongoose.Schema({
   email: { type: String },
   // address: { type: String, default: null },
   // pincode: { type: String, default: null},
+  city:{ type: String, default:null },
+  appointmentTime:{ type: String, default:null },
   bookingDate: { type: String, required: true },
   appointmentDate: { type: String, default: "Any Time" },
   message: { type: String },

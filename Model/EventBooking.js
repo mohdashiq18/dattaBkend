@@ -11,6 +11,7 @@ const eventSchema = mongoose.Schema({
   email: { type: String},
   pincode: { type: String, require: true },
   eventDate: { type: String, require: true },
+  city:{ type: String, default:null },
   message: { type: String },
   eventStatus:{type:String,default:"Pending"},
   eventTime:{type:String,default:"00:00"},
