@@ -18,6 +18,7 @@ Event.get("/", async (req, res) => {
           { bookingDate: { $regex: query, $options: "i" } },
           { eventName: { $regex: query, $options: "i" } },
           { lname: { $regex: query, $options: "i" } },
+          { city: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
           { pincode: { $regex: query, $options: "i" } },
           { eventStatus: { $regex: query, $options: "i" } },

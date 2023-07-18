@@ -15,6 +15,7 @@ Horo.get("/", async (req, res) => {
           { fname: { $regex: query, $options: "i" } },
           { lname: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
+          { city: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
           { horoDate: { $regex: query, $options: "i" } },
           { TOB: { $regex: query, $options: "i" } },

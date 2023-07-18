@@ -16,6 +16,7 @@ Appointment.get("/", async (req, res) => {
           { lname: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
+          { city: { $regex: query, $options: "i" } },
           { bookingDate: { $regex: query, $options: "i" } },
           { appointmentStatus: { $regex: query, $options: "i" } },
         ],
