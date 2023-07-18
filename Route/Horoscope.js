@@ -124,6 +124,12 @@ Horo.post("/", async (req, res) => {
         { nakshatra: payload.nakshatra }
       );
     }
+    const data = new HoroModel({
+      ...payload,
+      userId: id,
+      horoDate: formattedDate,
+    });
+    await data.save();
    }
    
 
