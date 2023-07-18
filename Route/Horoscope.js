@@ -130,22 +130,109 @@ Horo.post("/", async (req, res) => {
 });
 
 Horo.delete("/:id", async (req, res) => {
+  // const id = req.params.id;
+  // try {
+  //   await HoroModel.findByIdAndDelete({ _id: id });
+  //   res.send("Delete Success");
+  // } catch {
+  //   res.send("Delete Error");
+  // }
+
+
   const id = req.params.id;
   try {
+    const data = await HoroModel.find({ _id: id });
+    const payment = data[0].paymentStatus;
+    const amount = data[0].ammount;
+   
+    const user = await UsersModel.find({ _id: data[0].userId });
+    let { paidAmmount } = user[0];
+    let { remainAmmount } = user[0];
+    if(payment){
+      paidAmmount -= amount;
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+  
+        { paidAmmount}
+      );
+    }
+    else{
+      remainAmmount -= amount;
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+  
+        {remainAmmount }
+      );
+    }
     await HoroModel.findByIdAndDelete({ _id: id });
     res.send("Delete Success");
-  } catch {
+  } catch(err) {
+    console.log(err)
     res.send("Delete Error");
   }
 });
 
 Horo.patch("/:id", async (req, res) => {
+  // const id = req.params.id;
+  // const payload = req.body;
+  // try {
+  //   await HoroModel.findByIdAndUpdate({ _id: id }, payload);
+  //   res.send("Update Success");
+  // } catch {
+  //   res.send("Update Error");
+  // }
+
+
   const id = req.params.id;
   const payload = req.body;
+
   try {
-    await HoroModel.findByIdAndUpdate({ _id: id }, payload);
-    res.send("Update Success");
-  } catch {
+    const data = await HoroModel.find({ _id: id });
+    const payment = data[0].paymentStatus;
+    const amount = data[0].ammount;
+
+    await HoroModel.findByIdAndUpdate({ _id: id }, { ...payload });
+    const newdata = await HoroModel.find({ _id: id });
+    const paymentnew = newdata[0].paymentStatus;
+    const amountnew = newdata[0].ammount;
+
+    const user = await UsersModel.find({ _id: data[0].userId });
+    let { paidAmmount } = user[0];
+    let { remainAmmount } = user[0];
+
+    if (payment == paymentnew) {
+      
+      console.log(amount, amountnew);
+      if (amount != amountnew) {
+        
+        if (paymentnew) {
+          paidAmmount += amountnew - amount;
+        } else {
+          console.log("running");
+          remainAmmount += amountnew - amount;
+        }
+      }
+    } else {
+      if (payment) {
+        paidAmmount -= amount;
+        remainAmmount += amountnew;
+      } else {
+        console.log("5th");
+        paidAmmount += amountnew;
+        remainAmmount -= amount;
+      }
+    }
+    const usersdata = await UsersModel.find({ _id: data[0].userId });
+    console.log(paidAmmount, remainAmmount, usersdata);
+
+    await UsersModel.findByIdAndUpdate(
+      { _id: data[0].userId },
+
+      { paidAmmount, remainAmmount }
+    );
+    res.send("Updated successfully");
+  } catch (err) {
+    console.log(err);
     res.send("Update Error");
   }
 });
