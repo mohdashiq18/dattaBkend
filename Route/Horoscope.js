@@ -65,7 +65,16 @@ Horo.get("/:id", async (req, res) => {
 Horo.post("/", async (req, res) => {
   const payload = req.body;
   let check = await UsersModel.find({ phone: payload.phone });
-  console.log(check);
+  const currentDate = new Date();
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+
+    // Add leading zero to month if necessary
+    const formattedMonth = month < 10 ? `0${month}` : month;
+    const foramttedday = day < 10 ? `0${day}` : day;
+    const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
   try {
     if (check.length == 0) {
       const user = new UsersModel({
@@ -85,6 +94,15 @@ Horo.post("/", async (req, res) => {
 
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
+   if(check.length==0){
+    const data = new HoroModel({
+      ...payload,
+      userId: id,
+      horoDate: formattedDate,
+    });
+    await data.save();
+   }
+   else{
     if (!userid[0].address) {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
@@ -106,24 +124,11 @@ Horo.post("/", async (req, res) => {
         { nakshatra: payload.nakshatra }
       );
     }
-    const currentDate = new Date();
+   }
+   
 
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-
-    // Add leading zero to month if necessary
-    const formattedMonth = month < 10 ? `0${month}` : month;
-    const foramttedday = day < 10 ? `0${day}` : day;
-    const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
-
-    const data = new HoroModel({
-      ...payload,
-      userId: id,
-      horoDate: formattedDate,
-    });
-    await data.save();
-    res.send(data);
+    
+    res.send("Post");
   } catch (err) {
     res.send("Post ERRoR");
     console.log(err);
