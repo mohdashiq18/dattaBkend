@@ -146,88 +146,52 @@ Event.delete("/:id", async (req, res) => {
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
-  const data = await EventModel.find({ _id: id });
-  const user = await UsersModel.find({ _id: data[0].userId });
-  const status = data[0].eventStatus;
-  let { ammount } = data[0];
-  let { paidAmmount } = user[0];
-  let { remainAmmount } = user[0];
 
   try {
-    if(ammount>0 && payload.ammount){
-           if(payload.eventStatus){
-               if(payload.eventStatus=="Completed"){
-                await UsersModel.findByIdAndUpdate(
-                  { _id: data[0].userId },
-                  { remainAmmount: +remainAmmount - +ammount,paidAmmount:+paidAmmount+ +payload.ammount }
-                );
-               }
-               else{
-                await UsersModel.findByIdAndUpdate(
-                  { _id: data[0].userId },
-                  { remainAmmount: remainAmmount + payload.ammount,paidAmmount:paidAmmount-ammount }
-                );
-               }
-           }
-           else{
-            if(status=="Pending"){
-              await UsersModel.findByIdAndUpdate(
-                { _id: data[0].userId },
-                { remainAmmount: +(remainAmmount - ammount)+ +payload.ammount}
-              );
-            }
-            else{
-              await UsersModel.findByIdAndUpdate(
-                { _id: data[0].userId },
-                {paidAmmount:+paidAmmount+ +payload.ammount- +ammount }
-              );
-            }
-           }
-    }
-    else if (payload.ammount && payload.eventStatus) {
-      if (payload.eventStatus == "Pending") {
-        await UsersModel.findByIdAndUpdate(
-          { _id: data[0].userId },
-          { remainAmmount: +remainAmmount + +payload.ammount }
-        );
+    const data = await EventModel.find({ _id: id });
+    const payment = data[0].paymentStatus;
+    const amount = data[0].ammount;
+
+    await EventModel.findByIdAndUpdate({ _id: id }, { ...payload });
+    const newdata = await EventModel.find({ _id: id });
+    const paymentnew = newdata[0].paymentStatus;
+    const amountnew = newdata[0].ammount;
+
+    const user = await UsersModel.find({ _id: data[0].userId });
+    let { paidAmmount } = user[0];
+    let { remainAmmount } = user[0];
+
+    if (payment == paymentnew) {
+      
+      console.log(amount, amountnew);
+      if (amount != amountnew) {
+        
+        if (paymentnew) {
+          paidAmmount += amountnew - amount;
+        } else {
+          console.log("running");
+          remainAmmount += amountnew - amount;
+        }
+      }
+    } else {
+      if (payment) {
+        paidAmmount -= amount;
+        remainAmmount += amountnew;
       } else {
-        await UsersModel.findByIdAndUpdate(
-          { _id: data[0].userId },
-          { paidAmmount: +paidAmmount + +payload.ammount}
-        );
-      }
-    } else if (payload.ammount && status == "Pending") {
-      await UsersModel.findByIdAndUpdate(
-        { _id: data[0].userId },
-        { remainAmmount: +remainAmmount + +payload.ammount }
-      );
-    } else if (payload.ammount && status == "Pending") {
-      await UsersModel.findByIdAndUpdate(
-        { _id: data[0].userId },
-        { paidAmmount: +paidAmmount + +payload.ammount}
-      );
-    } else if (payload.eventStatus && ammount > 0) {
-      if (payload.eventStatus === "Pending") {
-        await UsersModel.findByIdAndUpdate(
-          { _id: data[0].userId },
-          {
-            paidAmmount: +paidAmmount - +ammount,
-            remainAmmount: +remainAmmount + +ammount,
-          }
-        );
-      }
-      else{
-        await UsersModel.findByIdAndUpdate(
-          { _id: data[0].userId },
-          {
-            paidAmmount: paidAmmount + ammount,
-            remainAmmount: remainAmmount - ammount,
-          }
-        );
+        console.log("5th");
+        paidAmmount += amountnew;
+        remainAmmount -= amount;
       }
     }
-    await EventModel.findByIdAndUpdate({ _id: id }, {...payload});
-    res.send("Update Success");
+    const usersdata = await UsersModel.find({ _id: data[0].userId });
+    console.log(paidAmmount, remainAmmount, usersdata);
+
+    await UsersModel.findByIdAndUpdate(
+      { _id: data[0].userId },
+
+      { paidAmmount, remainAmmount }
+    );
+    res.send("Updated successfully");
   } catch (err) {
     console.log(err);
     res.send("Update Error");
