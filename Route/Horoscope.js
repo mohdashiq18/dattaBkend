@@ -130,13 +130,7 @@ Horo.post("/", async (req, res) => {
 });
 
 Horo.delete("/:id", async (req, res) => {
-  // const id = req.params.id;
-  // try {
-  //   await HoroModel.findByIdAndDelete({ _id: id });
-  //   res.send("Delete Success");
-  // } catch {
-  //   res.send("Delete Error");
-  // }
+
 
 
   const id = req.params.id;
