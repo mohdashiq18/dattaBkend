@@ -144,13 +144,20 @@ Event.delete("/:id", async (req, res) => {
     let { paidAmmount } = user[0];
     let { remainAmmount } = user[0];
     if(payment){
-      console.log(amount)
       paidAmmount -= amount;
-      
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+  
+        { paidAmmount}
+      );
     }
     else{
-      console.log(amount)
       remainAmmount -= amount;
+      await UsersModel.findByIdAndUpdate(
+        { _id: data[0].userId },
+  
+        {remainAmmount }
+      );
     }
     await EventModel.findByIdAndDelete({ _id: id });
     res.send("Delete Success");
