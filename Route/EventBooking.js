@@ -14,6 +14,9 @@ Event.get("/", async (req, res) => {
           { eventDate: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
           { fname: { $regex: query, $options: "i" } },
+          { district: { $regex: query, $options: "i" } },
+          { bookingDate: { $regex: query, $options: "i" } },
+          { eventName: { $regex: query, $options: "i" } },
           { lname: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
           { pincode: { $regex: query, $options: "i" } },
@@ -98,8 +101,8 @@ Event.post("/", async (req, res) => {
   
   // Add leading zero to month if necessary
   const formattedMonth = month < 10 ? `0${month}` : month;
-  
-  const formattedDate = `${day}/${formattedMonth}/${year}`;
+  const foramttedday=day<10?`0${day}`:day
+  const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
   let check = await UsersModel.find({ phone: payload.phone });
   try {
     if (check.length == 0) {
@@ -108,7 +111,7 @@ Event.post("/", async (req, res) => {
         fname: payload.fname,
         lname: payload.lname ? payload.lname : "",
         email: payload.email ? payload.email : "",
-        address: `${payload.address}, ${payload.pincode}`,
+        address: `${payload.address}, ${payload.pincode}, ${payload.district}`,
       });
       await user.save();
       console.log("user save");
@@ -120,7 +123,7 @@ Event.post("/", async (req, res) => {
     if (!userid[0].address) {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
-        { address: `${payload.address}, ${payload.pincode}` }
+        { address: `${payload.address}, ${payload.pincode}, ${payload.district}` }
       );
     }
     const data = new EventModel({ ...payload, userId: id,bookingDate:formattedDate });
@@ -156,7 +159,7 @@ Event.patch("/:id", async (req, res) => {
                if(payload.eventStatus=="Completed"){
                 await UsersModel.findByIdAndUpdate(
                   { _id: data[0].userId },
-                  { remainAmmount: remainAmmount - ammount,paidAmmount:paidAmmount+payload.ammount }
+                  { remainAmmount: +remainAmmount - +ammount,paidAmmount:+paidAmmount+ +payload.ammount }
                 );
                }
                else{
@@ -170,13 +173,13 @@ Event.patch("/:id", async (req, res) => {
             if(status=="Pending"){
               await UsersModel.findByIdAndUpdate(
                 { _id: data[0].userId },
-                { remainAmmount: (remainAmmount - ammount)+payload.ammount}
+                { remainAmmount: +(remainAmmount - ammount)+ +payload.ammount}
               );
             }
             else{
               await UsersModel.findByIdAndUpdate(
                 { _id: data[0].userId },
-                {paidAmmount:paidAmmount+payload.ammount-ammount }
+                {paidAmmount:+paidAmmount+ +payload.ammount- +ammount }
               );
             }
            }
@@ -185,31 +188,31 @@ Event.patch("/:id", async (req, res) => {
       if (payload.eventStatus == "Pending") {
         await UsersModel.findByIdAndUpdate(
           { _id: data[0].userId },
-          { remainAmmount: remainAmmount + payload.ammount }
+          { remainAmmount: +remainAmmount + +payload.ammount }
         );
       } else {
         await UsersModel.findByIdAndUpdate(
           { _id: data[0].userId },
-          { paidAmmount: paidAmmount + payload.ammount}
+          { paidAmmount: +paidAmmount + +payload.ammount}
         );
       }
     } else if (payload.ammount && status == "Pending") {
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-        { remainAmmount: remainAmmount + payload.ammount }
+        { remainAmmount: +remainAmmount + +payload.ammount }
       );
     } else if (payload.ammount && status == "Pending") {
       await UsersModel.findByIdAndUpdate(
         { _id: data[0].userId },
-        { paidAmmount: paidAmmount + payload.ammount}
+        { paidAmmount: +paidAmmount + +payload.ammount}
       );
     } else if (payload.eventStatus && ammount > 0) {
       if (payload.eventStatus === "Pending") {
         await UsersModel.findByIdAndUpdate(
           { _id: data[0].userId },
           {
-            paidAmmount: paidAmmount - ammount,
-            remainAmmount: remainAmmount + ammount,
+            paidAmmount: +paidAmmount - +ammount,
+            remainAmmount: +remainAmmount + +ammount,
           }
         );
       }

@@ -12,9 +12,11 @@ Appointment.get("/", async (req, res) => {
       data = await AppointmentModel.find({
         $or: [
           { appointmentDate: { $regex: query, $options: "i" } },
+          { fname: { $regex: query, $options: "i" } },
+          { lname: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
-          { pincode: { $regex: query, $options: "i" } },
+          { bookingDate: { $regex: query, $options: "i" } },
           { appointmentStatus: { $regex: query, $options: "i" } },
         ],
       })
@@ -83,8 +85,8 @@ Appointment.post("/", async (req, res) => {
   
   // Add leading zero to month if necessary
   const formattedMonth = month < 10 ? `0${month}` : month;
-  
-  const formattedDate = `${day}/${formattedMonth}/${year}`;
+  const formattedday= day <10 ?`0${day}`: day;
+  const formattedDate = `${formattedday}/${formattedMonth}/${year}`;
   try {
     if (check.length == 0) {
       const user = new UsersModel({

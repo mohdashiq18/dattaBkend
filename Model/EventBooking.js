@@ -18,6 +18,7 @@ const eventSchema = mongoose.Schema({
   paymentStatus:{type:Boolean,default:false},
   ammount:{type:Number,default:0},
   address: { type: String, require: true },
+  district: { type: String },
   authorMessage: { type: String,default: null }
 });
 

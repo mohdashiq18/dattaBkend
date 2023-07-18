@@ -12,9 +12,11 @@ Horo.get("/", async (req, res) => {
       data = await HoroModel.find({
         $or: [
           { DOB: { $regex: query, $options: "i" } },
+          { fname: { $regex: query, $options: "i" } },
+          { lname: { $regex: query, $options: "i" } },
           { phone: { $regex: query, $options: "i" } },
           { email: { $regex: query, $options: "i" } },
-          { pincode: { $regex: query, $options: "i" } },
+          { horoDate: { $regex: query, $options: "i" } },
           { TOB: { $regex: query, $options: "i" } },
           { POB: { $regex: query, $options: "i" } },
           { horoStatus: { $regex: query, $options: "i" } },
@@ -72,60 +74,53 @@ Horo.post("/", async (req, res) => {
         email: payload.email ? payload.email : "",
         DOB: payload.DOB,
         TOB: payload.TOB,
-        nakshatra:payload.nakshatra,
+        nakshatra: payload.nakshatra,
         POB: payload.POB,
         address: payload.address,
-      }); 
+      });
       await user.save();
       console.log("user save");
     }
-   
+
     const userid = await UsersModel.find({ phone: payload.phone });
     const id = userid[0]._id;
     if (!userid[0].address) {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
-        { address: payload.address}
+        { address: payload.address }
       );
     }
-    if (!userid[0].DOB ) {
+    if (!userid[0].DOB) {
+      await UsersModel.findByIdAndUpdate({ _id: id }, { DOB: payload.DOB });
+    }
+    if (!userid[0].TOB) {
+      await UsersModel.findByIdAndUpdate({ _id: id }, { TOB: payload.TOB });
+    }
+    if (!userid[0].POB) {
+      await UsersModel.findByIdAndUpdate({ _id: id }, { POB: payload.POB });
+    }
+    if (!check[0].nakshatra) {
       await UsersModel.findByIdAndUpdate(
         { _id: id },
-        { DOB: payload.DOB  }
+        { nakshatra: payload.nakshatra }
       );
     }
-    if (!userid[0].TOB ) {
-        await UsersModel.findByIdAndUpdate(
-          { _id: id },
-          { TOB: payload.TOB  }
-        );
-      }
-      if (!userid[0].POB ) {
-        await UsersModel.findByIdAndUpdate(
-          { _id: id },
-          { POB: payload.POB  }
-        );
-      } 
-      if(!check[0].nakshatra){
-        await UsersModel.findByIdAndUpdate(
-          { _id: id },
-          { nakshatra:payload.nakshatra  }
-        );
-      }
-      const currentDate = new Date();
+    const currentDate = new Date();
 
-const day = currentDate.getDate();
-const month = currentDate.getMonth() + 1;
-const year = currentDate.getFullYear();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
 
-// Add leading zero to month if necessary
-const formattedMonth = month < 10 ? `0${month}` : month;
+    // Add leading zero to month if necessary
+    const formattedMonth = month < 10 ? `0${month}` : month;
+    const foramttedday = day < 10 ? `0${day}` : day;
+    const formattedDate = `${foramttedday}/${formattedMonth}/${year}`;
 
-const formattedDate = `${day}/${formattedMonth}/${year}`;
-
-
-
-    const data = new HoroModel({ ...payload, userId: id,horoDate:formattedDate});
+    const data = new HoroModel({
+      ...payload,
+      userId: id,
+      horoDate: formattedDate,
+    });
     await data.save();
     res.send(data);
   } catch (err) {
