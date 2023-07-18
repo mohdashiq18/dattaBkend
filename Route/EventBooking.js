@@ -130,19 +130,36 @@ Event.post("/", async (req, res) => {
     await data.save();
     res.send(data);
   } catch {
-    res.send("err");
+    res.send("err"); 
   }
 });
 Event.delete("/:id", async (req, res) => {
   const id = req.params.id;
   try {
+    const data = await EventModel.find({ _id: id });
+    const payment = data[0].paymentStatus;
+    const amount = data[0].ammount;
+   
+    const user = await UsersModel.find({ _id: data[0].userId });
+    let { paidAmmount } = user[0];
+    let { remainAmmount } = user[0];
+    if(payment){
+      console.log(amount)
+      paidAmmount -= amount;
+      
+    }
+    else{
+      console.log(amount)
+      remainAmmount -= amount;
+    }
     await EventModel.findByIdAndDelete({ _id: id });
     res.send("Delete Success");
-  } catch {
+  } catch(err) {
+    console.log(err)
     res.send("Delete Error");
   }
 });
-
+  
 Event.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const payload = req.body;
